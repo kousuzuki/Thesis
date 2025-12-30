@@ -1,13 +1,40 @@
 \chapter{提案手法}\label{chap:method}
 
 
+VRヘッドマウントディスプレイ（HMD）のビデオシースルー機能（パススルー）を活用し, 現実世界の視覚情報をリアルタイムで加工・提示するシステムを構築した. 
+
+\subsection{開発環境および使用機材}
+本システムの開発および実験には, 表\ref{tab:development_env}に示す環境および機材を使用した. HMDには, 高解像度のカラーパススルー機能を備えたMeta Quest 3を採用した. 
+
+\begin{table}[H]
+  \centering
+  \caption{開発環境および使用機材}
+  \label{tab:development_env}
+  \begin{tabular}{ll}
+    \toprule
+    項目 & 内容 \\
+    \midrule
+    HMD & Meta Quest 3 \\
+    ゲームエンジン & Unity 2022.3.52f1 \\
+    開発ツールキット & Meta OpenXR SDK / Passthrough camera API Samples / Meta All In One SDK \\
+    ビルド環境 & Android OS (Quest Native) \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{視覚変容フィルターの実装}
+視覚情報の変容を実現するため, Meta社が提供している公式サンプルプロジェクト「PassthroughCameraApiSamples」を基に, 独自のシェーダエフェクトを実装した. 
+
+具体的には, サンプル内に含まれる「Shader Sample」をベースとして活用し, パススルー映像の指定範囲のピクセルに対して階調反転処理（ネガポジ反転）を行うカスタムシェーダを記述した. 
+このシェーダでは, カメラから入力されたRGBの各輝度値 $I$ に対し, 出力値 $I'$ を $I' = 1.0 - I$ と定義することで, 色相と明度を反転させている. 
 
 
-\section{実験の概要}
+\subsection{アプリケーションのデプロイ}
+実装したネガポジ反転フィルターは, Unityのビルド設定においてAndroidプラットフォーム向けに最適化を行い, apk形式のアプリケーションとしてMeta Quest 3にインストールした. 
+これにより, PCとの有線接続による遅延を排除し, 被験者が頭部を自由に動かした際にも, 遅延などの違和感を最小限に抑えた状態で, パススルー映像を映すことが可能となった. 
 
-図に書くと図\ref{fig:vq_map_128part}っていう感じ. 
-式で書くとだいたい以下のような感じになるんじゃないんかなー. 
-式(\ref{eq:j})が肝. 
+
+
 
 %\begin{figure}[h]
        % \begin{center}
